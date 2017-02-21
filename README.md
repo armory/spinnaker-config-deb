@@ -5,6 +5,7 @@ distributed as a Debian package.  The build file is based on [Gradle Linux Packa
 Plugin](https://github.com/nebula-plugins/gradle-ospackage-plugin).  
 
 ### Notable files & directories
+
 `build.sh` - The build script that will create the Debian package.  In order
 to maintain consistency across build environments this script depends on Docker
 being available.  
@@ -18,6 +19,6 @@ Artifactory
 `./deb-config/` - All the files and scripts that will be packaged up as part of
 the Debian process
 
-`./deb-config/scripts` - Post/Pre install/un-install scripts.  See more
+`./deb-config/scripts` - Post/Pre install/un-install scripts to further customize your Debian installation
 
 There are many examples in the [Nebula Plugins](https://github.com/nebula-plugins/gradle-ospackage-plugin/wiki/Usage-Example) repository demonstrating how to extends this example
