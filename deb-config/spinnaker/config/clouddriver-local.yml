@@ -1,0 +1,15 @@
+#example clouddriver local file
+aws:
+  enabled: true
+  accounts:
+    - name: example-staging
+      accountId: "012345678901"
+      regions:
+        - name: us-west-2
+        - name: us-east-1
+    - name: example-dev
+      accountId: "012345678901"
+      regions:
+        - name: us-east-1
+        - name: us-west-2
+  defaultAssumeRole: role/SpinnakerManagedProfile

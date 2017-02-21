@@ -1,0 +1,43 @@
+# THIS IS AN EXAMPLE FILE
+# This file is intended to override the default configuration in the
+# spinnaker.yml file while providing guidance on the mostly likely
+# configuration parameters to be changed.
+#
+# In order for Spinnaker to discover it, it must be copied to a file named
+# "spinnaker-local.yml" and placed in /opt/spinnaker/config
+# (or when running from source code, in the $HOME/.spinnaker directory.)
+#
+# A better practice could be to create the spinnaker-local.yml file by
+# hand with only the particular attributes that you want to override
+# and use the spinnaker.yml file as your guide since it is spinnaker.yml
+# that we are overriding here in the first place.
+
+global:
+  spinnaker:
+    timezone: 'America/Los_Angeles'
+
+providers:
+  # See http://www.spinnaker.io/v1.0/docs/target-deployment-setup
+  # for general information about configuring spinnaker platform providers.
+
+  # Each of the following providers can be enabled independent of all other
+  # providers unless otherwise noted.
+  #
+  # Each provider can be enabled by setting its 'enabled' attribute to true.
+  # As a rule of thumb, each provider defines a 'primaryCredentials' block
+  # that configures a default account for Spinnaker to use on that platform.
+  # If additional accounts are desired, then add those accounts to a
+  # custom clouddriver-local.yml file and consult clouddriver.yml for more
+  # information on what to add there.
+
+  aws:
+    # For more information on configuring Amazon Web Services (aws), see
+    # http://www.spinnaker.io/v1.0/docs/target-deployment-setup#section-amazon-web-services-setup
+
+    enabled: ${SPINNAKER_AWS_ENABLED:true}
+    defaultRegion: ${SPINNAKER_AWS_DEFAULT_REGION:us-east-1}
+    defaultIAMRole: DefaultSpinnakerIAMRole
+    primaryCredentials:
+      name: default-aws-account
+
+    defaultKeyPairTemplate: "spinnaker-default-keypair"

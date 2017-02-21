@@ -1,0 +1,53 @@
+version: "2.1"
+
+services:
+  healthcheck:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+
+  clouddriver:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+
+  front50:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+
+  orca:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+  igor:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+  gate:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+  rosco:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+
+  echo:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
+
+  deck:
+    logging:
+       driver: syslog
+       options:
+         syslog-address: "tcp://YOURHOSTNAME:1514"
