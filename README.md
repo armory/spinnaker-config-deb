@@ -21,4 +21,4 @@ the Debian process
 
 `./deb-config/scripts` - Post/Pre install/un-install scripts to further customize your Debian installation
 
-There are many examples in the [Nebula Plugins](https://github.com/nebula-plugins/gradle-ospackage-plugin/wiki/Usage-Example) repository demonstrating how to extends this example
+There are many examples in the [Nebula Plugins](https://github.com/nebula-plugins/gradle-ospackage-plugin/wiki/Usage-Example) repository demonstrating how to extend this example.
