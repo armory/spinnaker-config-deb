@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# Make the build fail on errors.
+set -e
+
+# Strip the first part to avoid credentials leaks.
+echo "repository=$(echo $repository | sed s/^.*@//g)"
+echo "package_type=$package_type"
+echo "packages=$packages"
+echo "upgrade=$upgrade"
+
+# Strip leading/trailing quotes if present.
+repository=`echo $repository | sed 's/^"\(.*\)"$/\1/'`
+
+# Strip leading/trailing quotes if present.
+# Also convert a comma-separated list to a whitespace-separated one.
+packages=`echo $packages | sed 's/^"\(.*\)"$/\1/' | sed 's/,/ /g'`
+
+
+function provision_deb() {
+  ## ARMORY SPECIFIC
+  #Add https support
+  sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates
+
+  #Add the docker gpg key
+  curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add -
+
+  #Add the armory gpg key
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61
+
+  #Add the docker repo to the sources list
+  echo "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" \
+        | sudo tee -a /etc/apt/sources.list
+
+  #Add the armory bintray repo to the sources list
+  echo "deb https://dl.bintray.com/armory/debians trusty main" \
+    | sudo tee -a /etc/apt/sources.list
+
+  # https://www.packer.io/docs/builders/amazon-chroot.html look at gotchas at the end.
+  if [[ "$disable_services" == "true" ]]; then
+    echo "creating /usr/sbin/policy-rc.d to prevent services from being started"
+    echo '#!/bin/sh' | sudo tee /usr/sbin/policy-rc.d > /dev/null
+    echo 'exit 101' | sudo tee -a /usr/sbin/policy-rc.d > /dev/null
+    sudo chmod a+x /usr/sbin/policy-rc.d
+  fi
+
+  if [[ "$repository" != "" ]]; then
+    IFS=';' read -ra repo <<< "$repository"
+    for i in "${repo[@]}"; do
+      echo "deb $i" | sudo tee -a /etc/apt/sources.list.d/spinnaker.list > /dev/null
+    done
+  fi
+
+  sudo apt-get update
+  if [[ "$upgrade" == "true" ]]; then
+    sudo unattended-upgrade -v
+  fi
+
+  # Enforce the package installation order.
+  for package in $packages; do sudo apt-get install --force-yes -y $package; done
+
+  # https://www.packer.io/docs/builders/amazon-chroot.html look at gotchas at the end.
+  if [[ "$disable_services" == "true" ]]; then
+    echo "removing /usr/sbin/policy-rc.d"
+    sudo rm -f /usr/sbin/policy-rc.d
+  fi
+
+  if [[ "$repository" != "" ]]; then
+    # Cleanup repository configuration
+    sudo rm /etc/apt/sources.list.d/spinnaker.list
+  fi
+}
+
+function provision_rpm() {
+  if [[ "$repository" != "" ]]; then
+    cat > /tmp/spinnaker.repo <<EOF
+[spinnaker]
+name=spinnaker
+baseurl=$repository
+gpgcheck=0
+enabled=1
+EOF
+    sudo mv /tmp/spinnaker.repo /etc/yum.repos.d/
+  fi
+
+  if [[ "$upgrade" == "true" ]]; then
+    sudo yum -y update
+  fi
+
+  # Enforce the package installation order.
+  for package in $packages; do sudo yum -y install $package; done
+
+  if [[ "$repository" != "" ]]; then
+    # Cleanup repository configuration
+    sudo rm /etc/yum.repos.d/spinnaker.repo
+  fi
+}
+
+function main() {
+  if [[ "$package_type" == "deb" ]]; then
+    provision_deb
+  elif [[ "$package_type" == "rpm" ]]; then
+    provision_rpm
+  fi
+}
+
+main
