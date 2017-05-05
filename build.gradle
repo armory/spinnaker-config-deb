@@ -19,6 +19,8 @@ ospackage {
   packageName = "mycompanyname-spinnaker-config"
   version = "0.${buildNumber}.0"
   release = "h${buildNumber}.${branchName}"
+  user = 'root'
+  permissionGroup = 'root'
 
   requires('curl')
 
