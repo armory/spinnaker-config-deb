@@ -41,3 +41,16 @@ providers:
       name: default-aws-account
 
     defaultKeyPairTemplate: "spinnaker-default-keypair"
+
+
+igor:
+  enabled: true
+
+
+jenkins:
+    enabled: ${services.igor.enabled:false}
+    defaultMaster:
+      name: Jenkins Builder
+      baseUrl: http://jenkins.elb
+      username: spinnaker-ro
+      password: password1234
