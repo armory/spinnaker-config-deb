@@ -33,4 +33,8 @@ ospackage {
   from('deb-config/spinnaker/config/') {
     into '/opt/spinnaker/config/'
   }
+
+  from('deb-config/spinnaker/env/') {
+    into '/opt/spinnaker/env/'
+  }
 }
