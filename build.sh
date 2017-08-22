@@ -11,4 +11,4 @@ docker run --rm \
   -e "BRANCH_NAME=${BRANCH_NAME}" \
   -v $(pwd)/:/app/ \
   frekele/gradle:2.12-jdk8 \
-  gradle -b /app/build.gradle buildDeb
+  gradle --gradle-user-home /app/.gradle -b /app/build.gradle buildDeb
