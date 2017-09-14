@@ -16,7 +16,7 @@ ospackage {
   def buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
   def branchName = System.getenv("BRANCH_NAME") ?: "dev"
 
-  packageName = "mycompanyname-spinnaker-config"
+  packageName = "spinnaker-config"
   version = "0.${buildNumber}.0"
   release = "h${buildNumber}.${branchName}"
   user = 'root'

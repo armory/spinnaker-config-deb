@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -x
+set -e
 
 GIT_HASH=$(git rev-parse HEAD | cut -c -7)
 BUILD_NUMBER=${BUILD_NUMBER:-0}
