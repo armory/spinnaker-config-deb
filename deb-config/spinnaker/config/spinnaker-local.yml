@@ -42,12 +42,12 @@ providers:
 
     defaultKeyPairTemplate: "spinnaker-default-keypair"
 
+services:
+  igor:
+    enabled: true
 
-igor:
-  enabled: true
 
-
-jenkins:
+  jenkins:
     enabled: ${services.igor.enabled:false}
     defaultMaster:
       name: Jenkins Builder
