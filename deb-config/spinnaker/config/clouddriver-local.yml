@@ -2,7 +2,7 @@
 aws:
   enabled: true
   accounts:
-    - name: example-staging
+    - name: default-aws-account
       accountId: "012345678901"
       regions:
         - name: us-west-2
