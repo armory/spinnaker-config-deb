@@ -47,6 +47,8 @@ igor:
   enabled: true
 
 
+# curious about how secrets work?
+# checkout https://github.com/Armory/spinnaker-config-deb/blob/master/deb-config/spinnaker/bin/secrets
 jenkins:
     enabled: ${services.igor.enabled:false}
     defaultMaster:
