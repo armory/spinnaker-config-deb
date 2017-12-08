@@ -8,10 +8,13 @@ node {
       '''
     }
 
-    stage("Publish using curl") {
-      sh '''
-      ./bin/push.sh
-      '''
+
+    if (env.BRANCH_NAME == "master") {
+      stage("Publish using curl") {
+        sh '''
+        ./bin/push.sh
+        '''
+      }
     }
 
     // you can find the through Jenkins using:

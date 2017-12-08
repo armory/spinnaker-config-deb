@@ -14,7 +14,7 @@ project.buildDir = '/app/build/'
 
 ospackage {
   def buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
-  def branchName = System.getenv("BRANCH_NAME") ?: "dev"
+  def branchName = System.getenv("BRANCH_NAME").replaceAll("/", "-") ?: "dev"
 
   packageName = "spinnaker-config"
   version = "0.${buildNumber}.0"
