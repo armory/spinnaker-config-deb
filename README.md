@@ -10,11 +10,9 @@ There's native support for Jenkins by using the Jenkinsfile and bintray. You'll 
 
 ### Notable files & directories
 
-`./bin/build.sh` - The build script that will create the Debian package.  In order
-to maintain consistency across build environments this script depends on Docker
-being available.  
+`./bin/build.sh` - The build script that will create the Debian package using `./gradlew`
 
-`./bin/push.sh` - The script used to push to your artifact repository, includes an example to push to bintray.
+`./bin/push.sh` - The script used to push to your artifact repository, includes an example to push to bintray and deb-s3.
 
 `./build/distributions/` - Contains Debian that is ready for distribution or
 installation. You'll want to want upload this to your central repository such as

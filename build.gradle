@@ -1,4 +1,8 @@
+apply plugin: 'nebula.ospackage'
+
+
 buildscript {
+  // Repositories from which this build.gradle will get it's dependencies.
   repositories {
     jcenter()
     maven { url "https://plugins.gradle.org/m2/" }
@@ -8,23 +12,36 @@ buildscript {
    }
 }
 
+// Nebula plugin which enable the debian package to be built.
 apply plugin: 'nebula.ospackage'
 
-project.buildDir = '/app/build/'
+// build directory for gradlew
+project.buildDir = 'build/'
 
+
+// Main gradle taske that builds the artifact.
+// Launched by running: ./gradlew buildDeb or ./gradlew buildRpm
+// Docs can be found: https://github.com/nebula-plugins/gradle-ospackage-plugin/wiki/Deb-Plugin
 ospackage {
+  // Jenkin's provided env variables
   def buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
-  def branchName = System.getenv("BRANCH_NAME").replaceAll("/", "-") ?: "dev"
+  def branchName = System.getenv("BRANCH_NAME")?.replaceAll("/", "-") ?: "dev"
 
+  // this will create a file in build/distributions
+  // that looks like <packageName>_<version>_<release>_<arch>.deb
   packageName = "spinnaker-config"
   version = "0.${buildNumber}.0"
   release = "h${buildNumber}.${branchName}"
   user = 'root'
   permissionGroup = 'root'
+  arch = "all"
 
+  // Package requirements
   requires('curl')
 
-  postInstall file('deb-config/scripts/post-install.sh')
+  // where to drop the configuration, artifacts which are created as part of the build
+  // from -> where the files are present after the build on Jenkins builder
+  // into -> where the files are expected to be after installing debian package
 
   from('deb-config/spinnaker/compose/') {
     into '/opt/spinnaker/compose/'
@@ -37,4 +54,8 @@ ospackage {
   from('deb-config/spinnaker/env/') {
     into '/opt/spinnaker/env/'
   }
+
+  // Things your package may need as root -> for example a system user for the app,
+  // Log directory creation/permissions, etc.
+  postInstall file('deb-config/scripts/post-install.sh')
 }
