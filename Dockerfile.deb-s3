@@ -1,0 +1,12 @@
+FROM ruby:2.2.0
+
+RUN gem install bundler
+
+WORKDIR /home
+RUN git clone https://github.com/armory/deb-s3.git -b 0.9.1-armory-v0.0.1 && \
+  cd deb-s3 && \
+  bundle install
+
+WORKDIR /home/deb-s3
+
+ENTRYPOINT ["/home/deb-s3/bin/deb-s3"]
