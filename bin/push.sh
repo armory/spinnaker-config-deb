@@ -41,6 +41,9 @@ docker run --rm --name=spinnaker-config-deb-s3 \
   deb-s3 upload \
   --access-key-id=${AWS_ACCESS_KEY} \
   --secret-access-key=${AWS_SECRET_KEY} \
+  --visibility=private \
+  --encryption \
+  --lock --fail-if-exists \
   --prefix=${S3_PREFIX} \
   --bucket ${S3_BUCKET} \
   --s3-region=${S3_REGION} \
