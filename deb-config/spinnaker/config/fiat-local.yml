@@ -1,0 +1,7 @@
+auth:
+  groupMembership:
+    service: github
+    github:
+      organization: armory-io
+      baseUrl: https://api.github.com
+      access_token:   # take a look at fiat-secrets.yml for the token
