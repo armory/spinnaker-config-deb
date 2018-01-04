@@ -54,5 +54,5 @@ jenkins:
     defaultMaster:
       name: Jenkins Builder
       baseUrl: http://jenkins.elb
-      username: spinnaker-ro
-      password: password1234
+      username: ${JENKINS_USERNAME}
+      password: ${JENKINS_PASSWORD}

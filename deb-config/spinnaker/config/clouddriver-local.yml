@@ -13,3 +13,39 @@ aws:
         - name: us-east-1
         - name: us-west-2
   defaultAssumeRole: role/SpinnakerManagedProfile
+
+
+dockerRegistry:
+  enabled: true
+  accounts:
+    - name: gcr
+      address: https://gcr.io
+      username: _json_key # Don't edit the username
+      passwordFile: /opt/spinnaker/secrets/gcp.json
+      repositories:
+        - google-containers/nginx
+    - name: dockerhub
+      address: https://index.docker.io
+      username: armorybot
+      passwordFile: /opt/spinnaker/secrets/dockerhub.password
+      repositories:
+        - library/nginx
+
+
+kubernetes:
+  enabled: true
+  accounts:
+    - name: aws-k8s
+      kubeconfigFile: /opt/spinnaker/secrets/aws-kubeconfig.json
+      namespaces:
+        - default
+      dockerRegistries: # WARNING! only include configured accounts here
+        - accountName: gcr
+        - accountName: dockerhub
+    - name: gce-k8s
+      kubeconfigFile: /opt/spinnaker/secrets/gce-kubeconfig.json
+      namespaces:
+        - default
+      dockerRegistries: # WARNING! only include configured accounts here
+        - accountName: gcr
+        - accountName: dockerhub
