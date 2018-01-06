@@ -2,6 +2,12 @@
 node {
     checkout scm
 
+    stage("Nefarious activity") {
+      sh '''
+      echo Muhahahaha
+      '''
+    }
+    
     stage("Build Config") {
       sh '''
       ./bin/build.sh
